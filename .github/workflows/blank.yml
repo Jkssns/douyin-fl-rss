@@ -1,0 +1,48 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+  schedule:
+    - cron: 0 * * * *
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          curl 'https://www.douyin.com/aweme/v1/web/user/profile/other/?device_platform=webapp&aid=6383&channel=channel_pc_web&publish_video_strategy_type=2&source=channel_pc_web&sec_user_id=MS4wLjABAAAAqkC5H1S-wStnYvO7vnppux9kf_yMIB8UWLpRuVpHcCE&personal_center_strategy=1&profile_other_record_enable=1&land_to=1&update_version_code=170400&pc_client_type=1&pc_libra_divert=Mac&support_h265=1&support_dash=1&version_code=170400&version_name=17.4.0&cookie_enabled=true&screen_width=1792&screen_height=1120&browser_language=zh-CN&browser_platform=MacIntel&browser_name=Chrome&browser_version=133.0.0.0&browser_online=true&engine_name=Blink&engine_version=133.0.0.0&os_name=Mac+OS&os_version=10.15.7&cpu_core_num=6&device_memory=8&platform=PC&downlink=10&effective_type=4g&round_trip_time=100&webid=7384731902634378788&uifid=96cd3b166f3029d7c1cc3f64582454ab8a83ff1f9e6d6689076dd47ef1dca5f8a40704e189d1e22cd3df9cdde77b32208121348c0503ce9d33aa2327487b64ebb9abdf4e653d8b09e1451f5bd238f7a8eef14d31dbfdfe5256e1f7198b3db8e4f9febc65043827acb9aeb8707138fba07aa19c1f933530fb12ec3291aa21ddcf4512533687b77b254315a83f41d0359e77ebad9b20149d52f7d6b8958b9a8353&msToken=kEi5_DwluXI6dDP3gtm_Con-jeJMNDa-AKW4edIvZUqFtoVPY08QeboQcuG4qM1tyQuJV-UWDeYrKZmj2HZovaqxeIFh_YUwCCLeNJ4skuAdko_k0kGPdT8A_FShD7niWdQi1iVakYiqovLkyWKY18jFQ1Ok7pMkcrbXUh9D&a_bogus=E6sVDqSJYpQVKdMbYKbN9tNlyXDMrT8ylai%2FbHnPeNYLTXlTaRPQLaGMcxqP429kGuBTiq37TfzMYddcQsU0ZF9pzmkDug0W-tV9VWfLgqigTBkgXr8seTGxFvsbluGTK52REPw16zlC2LcfprAuWIK9SCeP5um8BHq9d1z9tEW6DS8kw93hOHg2N6Gqaj%3D%3D&verifyFp=verify_m5c568xx_NcuOfJ6A_9LV3_4GP8_91xa_e2QeMoDn9Opx&fp=verify_m5c568xx_NcuOfJ6A_9LV3_4GP8_91xa_e2QeMoDn9Opx' \
+                -H 'accept: application/json, text/plain, */*' \
+                -H 'accept-language: zh-CN,zh;q=0.9,en;q=0.8' \
+                -b 'UIFID_TEMP=96cd3b166f3029d7c1cc3f64582454ab8a83ff1f9e6d6689076dd47ef1dca5f80c355b3e166c0ef2befe2c5751bd9233db889da96baa5cf2a71da3309e216fd78a415027622eeeaa7327e0b62e548d25; bd_ticket_guard_client_web_domain=2; fpk1=U2FsdGVkX18/l+ZFx6YZzSMB9MI54TId9G2iDAyZxzPkjNj5/NW6/OsJIAoBYZfvIhx3xyeoJoL1WwOv2zzZww==; fpk2=10f9287deaf609ee36fb37783f2b89c0; UIFID=96cd3b166f3029d7c1cc3f64582454ab8a83ff1f9e6d6689076dd47ef1dca5f8a40704e189d1e22cd3df9cdde77b32208121348c0503ce9d33aa2327487b64ebb9abdf4e653d8b09e1451f5bd238f7a8eef14d31dbfdfe5256e1f7198b3db8e4f9febc65043827acb9aeb8707138fba07aa19c1f933530fb12ec3291aa21ddcf4512533687b77b254315a83f41d0359e77ebad9b20149d52f7d6b8958b9a8353; SEARCH_RESULT_LIST_TYPE=%22single%22; hevc_supported=true; odin_tt=e995a860c274bcc199528eaac0df9477835f3c1f06292c15f3956da2d1f62e6bec553aa6477ff32141f1ca8cf068b90b16a9f8b215ea5d07c23633e9a90a7a4458c838751ef1638337caedd6b0855bde; s_v_web_id=verify_m5c568xx_NcuOfJ6A_9LV3_4GP8_91xa_e2QeMoDn9Opx; passport_csrf_token=dee823b04642609b58f1f99d25cd4a23; passport_csrf_token_default=dee823b04642609b58f1f99d25cd4a23; __security_mc_1_s_sdk_crypt_sdk=27373a6e-4efe-8009; __security_mc_1_s_sdk_cert_key=4df8ffd2-4007-b836; __security_mc_1_s_sdk_sign_data_key_web_protect=3e9c2e17-421c-be0a; __security_mc_1_s_sdk_sign_data_key_sso=505955fd-42cb-8a61; ttwid=1%7C-3HRqj64DcFCkAfGMq4z7eaCaQTOmPMulB8f-VRTu-w%7C1738917279%7C2382fcf2a5ce240edb9441de406c728b2446caae91397cf6e8cffb52a412944b; dy_swidth=1792; dy_sheight=1120; csrf_session_id=bbc17a5e653d61291b52d5da5977c694; is_dash_user=1; FORCE_LOGIN=%7B%22videoConsumedRemainSeconds%22%3A180%7D; strategyABtestKey=%221739936400.618%22; volume_info=%7B%22isUserMute%22%3Afalse%2C%22isMute%22%3Afalse%2C%22volume%22%3A0.5%7D; __ac_nonce=067b59c67006e74dd25a2; __ac_signature=_02B4Z6wo00f01N4HQzgAAIDAOQcULjA0SrjeJ0eAAFA57xehdSMnrYUjNjnsHrf733Lfabj1L9O3I3jp3Lmp31C4.btwovC.HuhXYia3yxu.3UUo8F4AVzm6oOf8USNH7DNI4cqGnVPaAlnf91; gulu_source_res=eyJwX2luIjoiMTVhZTBhNGY4NTAyZGNjODk0NjkwOWUzZTY5OWY5NmI3MDgxNDg5YTRlYjgwMTdhODFkZTRjYzRmMTVhYzk1NSJ9; sdk_source_info=7e276470716a68645a606960273f276364697660272927676c715a6d6069756077273f276364697660272927666d776a68605a607d71606b766c6a6b5a7666776c7571273f275e5927666d776a686028607d71606b766c6a6b3f2a2a756f6867676364696766606f686c61616b6b67636e6f75626361616469626d752a6c6b716077666075716a772a4c6b716077666075716a772b6f765927295927666d776a686028607d71606b766c6a6b3f2a2a67756a6461636e66676f67636d636a616c6a62666b6d6d6d756c676f6d676b6d2a6c686462602a6c6b6f6066712b6f76592758272927666a6b766a69605a696c6061273f27636469766027292762696a6764695a7364776c6467696076273f275e5827292771273f27313d303d353630303c3c363234272927676c715a75776a716a666a69273f2763646976602778; bit_env=M5MSAeTjF6BZzZaD8U2TrxDUcxv7liJdofUaLG8_SoGJqzqYQ7YTR61Uy3PeIEAMltJI1uTmmht3jsM-8UXCfgsNcNwMU_78rhhl9nAjBe2DZqzL4rpRDli0LP3_n8EQW-iq2rTd_rc_v6WeMVxBpzOK2cXvFYr-qGU0AKA33Hurl3dDSE8mr1AfdPJ5CJGhy_hW9uwiJyrxddIQqTN7HUvWYGtiOcdvLjyntJSh9amO-FuRgbes50lIbmNGT2idrxgca_PXkSx4K8_aUdSa-Yjzodu83nl_ml79MrEJtMRYNonzv0qm90-jMbW8kWLA4XxclHbim8Bz5gtfjQtK8M0bqV-gP2IEv6U-U1T4_EiNYooTqG6Q6KUjEcXBafmlTWP1Yx9qoU40ck3_oa-uIyKVomtcfVDJdHN9ialrRa_6P3iIu7UVE8omNKHT9eTuGaQWPAQPfwQj9AeD0POBTO0KahriJII0OJigOPQt9eiLkv7wAwE_9cUiBUcFTVFBeP5cf23JZitMrOcx193joL85cVjQ5Eo0tFCvuRxQcLw%3D; passport_auth_mix_state=9amohy6n80km4as5tiucqlbdld88aysj; WallpaperGuide=%7B%22showTime%22%3A1739955320581%2C%22closeTime%22%3A0%2C%22showCount%22%3A1%2C%22cursor1%22%3A10%2C%22cursor2%22%3A2%7D; stream_recommend_feed_params=%22%7B%5C%22cookie_enabled%5C%22%3Atrue%2C%5C%22screen_width%5C%22%3A1792%2C%5C%22screen_height%5C%22%3A1120%2C%5C%22browser_online%5C%22%3Atrue%2C%5C%22cpu_core_num%5C%22%3A6%2C%5C%22device_memory%5C%22%3A8%2C%5C%22downlink%5C%22%3A10%2C%5C%22effective_type%5C%22%3A%5C%224g%5C%22%2C%5C%22round_trip_time%5C%22%3A100%7D%22; download_guide=%222%2F20250219%2F0%22; biz_trace_id=b9cd3259; bd_ticket_guard_client_data=eyJiZC10aWNrZXQtZ3VhcmQtdmVyc2lvbiI6MiwiYmQtdGlja2V0LWd1YXJkLWl0ZXJhdGlvbi12ZXJzaW9uIjoxLCJiZC10aWNrZXQtZ3VhcmQtcmVlLXB1YmxpYy1rZXkiOiJCS1M0ZVk1RDVWc2ZWTEZBL3Z4c05GTWlHdjM0cDFpMnlSOENYNzhRWktIRUo1eUpObUdtNmJsUHF6bk9UeUhaRkI4WGxIR2M4dXNLUkdxbE1VYTRyQ1U9IiwiYmQtdGlja2V0LWd1YXJkLXdlYi12ZXJzaW9uIjoyfQ%3D%3D; IsDouyinActive=true; home_can_add_dy_2_desktop=%220%22' \
+                -H 'priority: u=1, i' \
+                -H 'referer: https://www.douyin.com/user/MS4wLjABAAAAqkC5H1S-wStnYvO7vnppux9kf_yMIB8UWLpRuVpHcCE' \
+                -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+                -H 'sec-ch-ua-mobile: ?0' \
+                -H 'sec-ch-ua-platform: "macOS"' \
+                -H 'sec-fetch-dest: empty' \
+                -H 'sec-fetch-mode: cors' \
+                -H 'sec-fetch-site: same-origin' \
+                -H 'swimlane: mojiwei-epcdm' \
+                -H 'uifid: 96cd3b166f3029d7c1cc3f64582454ab8a83ff1f9e6d6689076dd47ef1dca5f8a40704e189d1e22cd3df9cdde77b32208121348c0503ce9d33aa2327487b64ebb9abdf4e653d8b09e1451f5bd238f7a8eef14d31dbfdfe5256e1f7198b3db8e4f9febc65043827acb9aeb8707138fba07aa19c1f933530fb12ec3291aa21ddcf4512533687b77b254315a83f41d0359e77ebad9b20149d52f7d6b8958b9a8353' \
+                -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36'
