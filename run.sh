@@ -5,3 +5,5 @@ URL="https://example.com"
 
 # Run curl command
 curl $URL
+
+echo $URL
