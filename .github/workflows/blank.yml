@@ -42,4 +42,4 @@ jobs:
                 -H 'uifid: 96cd3b166f3029d7c1cc3f64582454ab8a83ff1f9e6d6689076dd47ef1dca5f8a40704e189d1e22cd3df9cdde77b32208121348c0503ce9d33aa2327487b64ebb9abdf4e653d8b09e1451f5bd238f7a8eef14d31dbfdfe5256e1f7198b3db8e4f9febc65043827acb9aeb8707138fba07aa19c1f933530fb12ec3291aa21ddcf4512533687b77b254315a83f41d0359e77ebad9b20149d52f7d6b8958b9a8353' \
                 -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36')
           bbb=$(echo $aaa | jq -c '[.user.ip_location, .user.favoriting_count]')
-          echo $bbb
+          curl https://sctapi.ftqq.com/SCT192110T5eQ8LJEyCUiZKZcqXzcQavgd.send?title=$bbb
