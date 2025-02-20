@@ -10,6 +10,12 @@ on:
     - cron: 10 * * * *
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+        example_input:
+          description: 'An example input'
+          required: true
+          default: 'default_value'
+  
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
