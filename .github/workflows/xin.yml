@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
         example_input:
-          description: '看吧'
+          description: '来了老弟'
           required: true
-          default: '来了老弟'
+          default: '别看了，没意义'
   
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
