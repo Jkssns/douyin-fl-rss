@@ -111,11 +111,9 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          git config --global user.name 'GitHub Actions'
-          git config --global user.email 'actions@github.com'
-          git add .
-          git commit -m 'update'
-          echo ${{ secrets.AAA }}
-          git push origin main
-        env:
-          GITHUB_TOKEN: ${{ secrets.AAA }}
+            git config --global user.name 'GitHub Actions'
+            git config --global user.email 'actions@github.com'
+            git add .
+            git commit -m 'update'
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+            git push origin main
