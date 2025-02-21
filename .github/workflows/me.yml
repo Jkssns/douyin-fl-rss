@@ -79,10 +79,10 @@ jobs:
             item.favoriting_count === lastItem.favoriting_count;
 
           if (!isSame) {
-            // 若不一致，将 item 添加到 dataArray 中
-            dataArray.push(item);
+            // 若不一致，将 item 添加到 data 中
+            data.push(item);
             // 将更新后的数据转换为字符串，并添加 var data = 和 ]
-            const newData = JSON.stringify(dataArray, null, 2)
+            const newData = JSON.stringify(data, null, 2)
             // 将新数据写入 data.json 文件
             fs.writeFileSync('data.json', newData);
             console.log('Data has been updated in data.json.');
