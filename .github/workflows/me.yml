@@ -1,7 +1,8 @@
 # This is a basic workflow to help you get started with Actions
 
 name: 我的
-
+permissions:
+  contents: write
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
@@ -15,8 +16,6 @@ on:
           description: 'An example input'
           required: true
           default: 'default_value'
-  
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
