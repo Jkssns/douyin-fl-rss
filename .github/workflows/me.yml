@@ -116,6 +116,6 @@ jobs:
           git add data.json
           git commit -m 'update'
           echo "Using token: ${{ github.repository }}"  # 打印令牌信息进行调试
-          git remote set-url origin https://x-access-token:${{ secrets.NAME }}@github.com/${{ github.repository }}
+          git remote set-url origin https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/${{ github.repository }}
           git push origin main
 
