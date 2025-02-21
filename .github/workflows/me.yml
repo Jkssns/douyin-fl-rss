@@ -50,7 +50,7 @@ jobs:
                 -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36')
           bbb=$(echo "$aaa" | jq -r '(.user.ip_location | sub("IP属地："; "")) + "-关注" + (.user.following_count|tostring) + "-粉丝" + (.user.follower_count|tostring) + "-喜欢" + (.user.favoriting_count|tostring)')
           item=$(echo "$aaa" | jq -c '{ip_location: (.user.ip_location | sub("IP属地："; "")), following_count: .user.following_count, follower_count: .user.follower_count, favoriting_count: .user.favoriting_count}')
-          echo "$item.ip_location"
+          echo "$item"
           curl "https://cx.super4.cn/push_msg?appkey=30de5d71bf88a6e74a39d572815e3fff-NKZBLIfu&title=$bbb"
           echo "item=$item" >> $GITHUB_OUTPUT
       
@@ -63,8 +63,7 @@ jobs:
         run: |
           cat << EOF > compareAndUpdate.js
           const fs = require('fs');
-          // 解析 item 时处理转义字符
-          const item = JSON.parse(\`"${{ steps.prepare-item.outputs.item }}" \`.replace(/^"|"$/g, ''));
+          const item = JSON.parse('${{ steps.prepare-item.outputs.item }}');
 
           // 读取 data.json 文件
           const dataFileContent = fs.readFileSync('data.json', 'utf8');
