@@ -78,8 +78,20 @@ jobs:
             item.follower_count === lastItem.follower_count &&
             item.favoriting_count === lastItem.favoriting_count;
 
+          function formatDate(date) {
+              const year = date.getFullYear();
+              const month = String(date.getMonth() + 1).padStart(2, '0');
+              const day = String(date.getDate()).padStart(2, '0');
+              const hours = String(date.getHours()).padStart(2, '0');
+              const minutes = String(date.getMinutes()).padStart(2, '0');
+              const seconds = String(date.getSeconds()).padStart(2, '0');
+
+              return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+          }
+
           if (!isSame) {
             // 若不一致，将 item 添加到 data 中
+            item.update_time = formatDate(new Date());
             data.push(item);
             // 将更新后的数据转换为字符串，并添加 var data = 和 ]
             const newData = JSON.stringify(data, null, 2)
