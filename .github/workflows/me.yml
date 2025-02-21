@@ -109,6 +109,11 @@ jobs:
       - name: Run Node.js script
         run: node compareAndUpdate.js
 
+      - name: Print token
+        run: echo $AAA
+        env:
+          MY_TOKEN: ${{ secrets.AAA }}
+
       - name: Commit and push changes
         run: |
             git config --global user.name 'GitHub Actions'
