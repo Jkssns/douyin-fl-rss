@@ -118,3 +118,12 @@ jobs:
           echo "Using token: ${{ secrets.NAME }}"  # 打印令牌信息进行调试
           git remote set-url origin https://x-access-token:${{ secrets.NAME }}@github.com/${{ github.repository }}
           git push origin main
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'Jkssns'
+          git config --global user.email 'zhangjun035@126.com'
+          git add .
+          git commit -m 'update'
+          echo "Using token: ${{ secrets.NAME }}"  # 打印令牌信息进行调试
+          git push -f https://Jkssns:${{ secrets.NAME }}@github.com/Jkssns/node-app.git
