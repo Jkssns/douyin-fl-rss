@@ -115,7 +115,6 @@ jobs:
           git config --global user.email 'zhangjun035@126.com'
           git add data.json
           git commit -m 'update'
-          echo "Using token: ${{ github.repository }}"  # 打印令牌信息进行调试
           git remote set-url origin https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/${{ github.repository }}
           git push origin main
 
