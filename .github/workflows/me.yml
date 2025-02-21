@@ -51,6 +51,7 @@ jobs:
           item=$(echo "$aaa" | jq -c '{ip_location: (.user.ip_location | sub("IP属地："; "")), following_count: .user.following_count, follower_count: .user.follower_count, favoriting_count: .user.favoriting_count}')
           echo "$item.ip_location"
           curl "https://cx.super4.cn/push_msg?appkey=30de5d71bf88a6e74a39d572815e3fff-NKZBLIfu&title=$bbb"
+          echo "item=$item" >> $GITHUB_OUTPUT
       
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -59,9 +60,9 @@ jobs:
 
       - name: Create Node.js script
         run: |
-          cat << EOF > compare.js
+          cat << EOF > compareAndUpdate.js
           const fs = require('fs');
-          echo "$item"
+          const item = JSON.parse(\`${{ steps.prepare-item.outputs.item }}\`);
 
           // 读取 data.json 文件
           const dataFileContent = fs.readFileSync('data.json', 'utf8');
@@ -72,14 +73,6 @@ jobs:
           // 获取最后一条记录
           const lastItem = dataArray[dataArray.length - 1];
 
-          // 处理 $item 数据
-          const item = {
-            ip_location: aaa.user.ip_location.replace('IP属地：', ''),
-            following_count: aaa.user.following_count,
-            follower_count: aaa.user.follower_count,
-            favoriting_count: aaa.user.favoriting_count
-          };
-
           // 对比字段
           const isSame = 
             item.ip_location === lastItem.ip_location &&
@@ -87,23 +80,31 @@ jobs:
             item.follower_count === lastItem.follower_count &&
             item.favoriting_count === lastItem.favoriting_count;
 
-          if (isSame) {
-            console.log('The data in $item and the last item in data.json are the same.');
+          if (!isSame) {
+            // 若不一致，将 item 添加到 dataArray 中
+            dataArray.push(item);
+            // 将更新后的数据转换为字符串，并添加 var data = 和 ]
+            const newData = \`var data = \${JSON.stringify(dataArray, null, 2)}\];\`;
+            // 将新数据写入 data.json 文件
+            fs.writeFileSync('data.json', newData);
+            console.log('Data has been updated in data.json.');
           } else {
-            console.log('The data in $item and the last item in data.json are different.');
+            console.log('The data in $item and the last item in data.json are the same. No update needed.');
           }
           EOF
-      
-      - name: 更新 index.html
+
+      - name: Run Node.js script
+        run: node compareAndUpdate.js
+
+      - name: Commit and push changes
+        if: steps.compare-and-update.outcome == 'success'
         run: |
-          current_data="$bbb"
-          last_data=$(grep -oP '(?<=<tr>\n.*<td>).*?(?=<\/td>)' index.html | tail -4 | tr '\n' '-' | sed 's/-$//')
-          if [ "$current_data" != "$last_data" ]; then
-            new_row="<tr>\n<td>${bbb//-/</td><td>}</td><td>$(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S')</td>\n</tr>"
-            sed -i '/<\/tbody>/i \\t\t'"$new_row" index.html
-            git config --global user.name 'github-actions'
-            git config --global user.email 'github-actions@github.com'
-            git add index.html
-            git commit -m "Update index.html with new data"
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add data.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update data.json with new item"
             git push
           fi
