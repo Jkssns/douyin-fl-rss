@@ -115,4 +115,4 @@ jobs:
           git config --global user.email 'actions@github.com'
           git add .
           git commit -m 'update'
-          git push -f https://Jkssns:${{ secrets.GITHUB_AAA }}@github.com/Jkssns/douyin-fl-rss.git main:gh-pages
+          git push -f https://Jkssns:${{ secrets.AAA }}@github.com/Jkssns/douyin-fl-rss.git main:gh-pages
