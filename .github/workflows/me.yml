@@ -61,7 +61,7 @@ jobs:
         run: |
           cat << EOF > compare.js
           const fs = require('fs');
-          console.log(222, $item)
+          echo "$item"
 
           // 读取 data.json 文件
           const dataFileContent = fs.readFileSync('data.json', 'utf8');
