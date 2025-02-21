@@ -136,13 +136,13 @@
         const tbody = document.getElementById('data-body');
          // 使用 fetch API 发起请求
          fetch('data.json')
-           .then(response => {
+           .then(async response => {
                 // 检查响应状态是否为 200（成功）
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 // 将响应数据解析为 JSON 格式
-                const data = response.json();
+                const data = await response.json();
                 console.log('data::: ', data);
 
                 // 遍历数据数组，为每个对象创建一个 tr 元素
