@@ -112,7 +112,12 @@ jobs:
       - name: Print token
         run: echo $MY_TOKEN
         env:
-          MY_TOKEN: ${{ secrets.MY_TOKEN }}
+          MY_TOKEN: ${{ secrets.AAA }}
+
+      - name: Print token2
+        run: echo $AAA
+        env:
+          MY_TOKEN: ${{ secrets.AAA }}
 
       - name: Commit and push changes
         run: |
