@@ -51,15 +51,48 @@ jobs:
           item=$(echo "$aaa" | jq -c '{ip_location: (.user.ip_location | sub("IP属地："; "")), following_count: .user.following_count, follower_count: .user.follower_count, favoriting_count: .user.favoriting_count}')
           echo "$item.ip_location"
           curl "https://cx.super4.cn/push_msg?appkey=30de5d71bf88a6e74a39d572815e3fff-NKZBLIfu&title=$bbb"
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-      - name: 读取 index.html
-        id: read_index
+      - name: Create Node.js script
         run: |
-          if [ -f index.html ]; then
-            cat index.html
-          else
-            echo "<html><body><table><thead><tr><th>IP归属地</th><th>关注数量</th><th>粉丝数量</th><th>喜欢数量</th><th>更新时间</th></tr></thead><tbody></tbody></table></body></html>" > index.html
-          fi
+          cat << EOF > compare.js
+          const fs = require('fs');
+          console.log(222, $item)
+
+          // 读取 data.json 文件
+          const dataFileContent = fs.readFileSync('data.json', 'utf8');
+          // 去除 var data = 和最后的 ] ，将内容转换为纯 JSON
+          const jsonContent = dataFileContent.replace(/var data = \[/, '').replace(/\]$/, '');
+          const dataArray = JSON.parse(\`[\${jsonContent}]\`);
+
+          // 获取最后一条记录
+          const lastItem = dataArray[dataArray.length - 1];
+
+          // 处理 $item 数据
+          const item = {
+            ip_location: aaa.user.ip_location.replace('IP属地：', ''),
+            following_count: aaa.user.following_count,
+            follower_count: aaa.user.follower_count,
+            favoriting_count: aaa.user.favoriting_count
+          };
+
+          // 对比字段
+          const isSame = 
+            item.ip_location === lastItem.ip_location &&
+            item.following_count === lastItem.following_count &&
+            item.follower_count === lastItem.follower_count &&
+            item.favoriting_count === lastItem.favoriting_count;
+
+          if (isSame) {
+            console.log('The data in $item and the last item in data.json are the same.');
+          } else {
+            console.log('The data in $item and the last item in data.json are different.');
+          }
+          EOF
       
       - name: 更新 index.html
         run: |
