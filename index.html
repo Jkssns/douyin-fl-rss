@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据列表</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* 全局样式 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f7f2eb, #EBDFCE);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* 容器样式 */
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            animation: slideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* 表格容器样式，添加滚动条 */
+        .table-container {
+            max-height: 80%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        /* 表头样式，固定表头 */
+        th {
+            background-color: #EBDFCE;
+            color: #665238;
+            padding: 20px;
+            text-align: left;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        /* 表格单元格样式 */
+        td {
+            padding: 18px;
+            border-bottom: 1px solid #e8e0d3;
+            transition: all 0.3s ease;
+        }
+
+        /* 表格行悬停效果 */
+        tr:hover td {
+            background-color: rgba(235, 223, 206, 0.4);
+            transform: scale(1.02);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 最后一行表格单元格样式 */
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* 滚动条样式 */
+        .table-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* 动画效果 */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>IP 归属地</th>
+                        <th>关注数量</th>
+                        <th>粉丝数量</th>
+                        <th>喜欢数量</th>
+                        <th>变更时间</th>
+                    </tr>
+                </thead>
+                <tbody id="data-body">
+                    <!-- 这里的数据将由 JavaScript 动态填充 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // 获取 tbody 元素
+        const tbody = document.getElementById('data-body');
+         // 使用 fetch API 发起请求
+         fetch('data.json')
+           .then(async response => {
+                // 检查响应状态是否为 200（成功）
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                // 将响应数据解析为 JSON 格式
+                const data = await response.json();
+                console.log('data::: ', data);
+
+                // 遍历数据数组，为每个对象创建一个 tr 元素
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+
+                    // 创建 IP 归属地单元格
+                    const ipCell = document.createElement('td');
+                    ipCell.textContent = item.ip_location;
+                    row.appendChild(ipCell);
+
+                    // 创建关注数量单元格
+                    const followingCell = document.createElement('td');
+                    followingCell.textContent = item.following_count;
+                    row.appendChild(followingCell);
+
+                    // 创建粉丝数量单元格
+                    const followerCell = document.createElement('td');
+                    followerCell.textContent = item.follower_count;
+                    row.appendChild(followerCell);
+
+                    // 创建喜欢数量单元格
+                    const likingCell = document.createElement('td');
+                    likingCell.textContent = item.favoriting_count;
+                    row.appendChild(likingCell);
+
+                    // 创建变更时间单元格
+                    const updateCell = document.createElement('td');
+                    updateCell.textContent = item.update_time;
+                    row.appendChild(updateCell);
+
+                    // 将行添加到 tbody 中
+                    tbody.appendChild(row);
+                });
+            })
+           .then(data => {
+                // 在这里可以对获取到的 JSON 数据进行操作
+                console.log(data);
+            })
+           .catch(error => {
+                // 处理请求过程中出现的错误
+                console.error('Fetch error:', error);
+            });
+
+
+             // 创建 XMLHttpRequest 对象
+        const xhr = new XMLHttpRequest();
+        // 打开一个 GET 请求
+        xhr.open('GET', 'data.json', true);
+        // 监听请求状态变化
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // 将响应文本解析为 JSON 格式
+                    const data = JSON.parse(xhr.responseText);
+                    // 在这里可以对获取到的 JSON 数据进行操作
+                    console.log(data);
+                } else {
+                    // 处理请求失败的情况
+                    console.error('请求失败，状态码:', xhr.status);
+                }
+            }
+        };
+        // 发送请求
+        xhr.send();
+    </script>
+</body>
+
+</html>
