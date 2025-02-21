@@ -85,6 +85,7 @@ jobs:
             const newData = JSON.stringify(data, null, 2)
             // 将新数据写入 data.json 文件
             fs.writeFileSync('data.json', newData);
+            console.log('data::: ', data);
             console.log('Data has been updated in data.json.');
           } else {
             console.log('The data in $item and the last item in data.json are the same. No update needed.');
