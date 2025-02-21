@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据列表</title>
+    <style>
+        /* 全局样式 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f7f2eb, #EBDFCE);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* 容器样式 */
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            animation: slideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 表头样式 */
+        th {
+            background-color: #EBDFCE;
+            color: #665238;
+            padding: 20px;
+            text-align: left;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        /* 表格单元格样式 */
+        td {
+            padding: 18px;
+            border-bottom: 1px solid #e8e0d3;
+            transition: all 0.3s ease;
+        }
+
+        /* 表格行悬停效果 */
+        tr:hover td {
+            background-color: rgba(235, 223, 206, 0.4);
+            transform: scale(1.02);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 最后一行表格单元格样式 */
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* 动画效果 */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>IP 归属地</th>
+                    <th>关注数量</th>
+                    <th>粉丝数量</th>
+                    <th>喜欢数量</th>
+                    <th>变更时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>辽宁</td>
+                    <td>158</td>
+                    <td>52</td>
+                    <td>1610</td>
+                    <td>2025-02-21 10:30:00</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
