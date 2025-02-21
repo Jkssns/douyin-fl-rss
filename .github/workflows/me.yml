@@ -112,7 +112,7 @@ jobs:
         run: |
           git config --global user.name 'Jkssns'
           git config --global user.email 'zhangjun035@126.com'
-          git add data.json
+          git add .
           git commit -m 'update'
           git remote set-url origin https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/${{ github.repository }}
           git push origin main
