@@ -109,22 +109,13 @@ jobs:
       - name: Run Node.js script
         run: node compareAndUpdate.js
 
-      - name: Commit and push changes2
-        run: |
-          git config --global user.name 'Jkssns'
-          git config --global user.email 'zhangjun035@126.com'
-          git add .
-          git commit -m 'update'
-          echo "Using token: ${{ secrets.NAME }}"  # 打印令牌信息进行调试
-          git push -f https://Jkssns:${{ secrets.NAME }}@github.com/Jkssns/douyin-fl-rss.git
-
       - name: Commit and push changes1
         run: |
           git config --global user.name 'Jkssns'
           git config --global user.email 'zhangjun035@126.com'
           git add data.json
           git commit -m 'update'
-          echo "Using token: ${{ secrets.NAME }}"  # 打印令牌信息进行调试
+          echo "Using token: ${{ github.repository }}"  # 打印令牌信息进行调试
           git remote set-url origin https://x-access-token:${{ secrets.NAME }}@github.com/${{ github.repository }}
           git push origin main
 
