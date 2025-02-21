@@ -29,16 +29,22 @@
             animation: slideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        /* 表格样式 */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            overflow: hidden;
+        /* 表格容器样式，添加滚动条 */
+        .table-container {
+            max-height: 80%;
+            overflow-y: auto;
+            overflow-x: hidden;
             border-radius: 15px;
             box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
         }
 
-        /* 表头样式 */
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        /* 表头样式，固定表头 */
         th {
             background-color: #EBDFCE;
             color: #665238;
@@ -47,6 +53,9 @@
             font-weight: 700;
             letter-spacing: 1.5px;
             text-transform: uppercase;
+            position: sticky;
+            top: 0;
+            z-index: 1;
         }
 
         /* 表格单元格样式 */
@@ -68,6 +77,25 @@
             border-bottom: none;
         }
 
+        /* 滚动条样式 */
+        .table-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
         /* 动画效果 */
         @keyframes slideIn {
             from {
@@ -84,27 +112,62 @@
 
 <body>
     <div class="container">
-        <table>
-            <thead>
-                <tr>
-                    <th>IP 归属地</th>
-                    <th>关注数量</th>
-                    <th>粉丝数量</th>
-                    <th>喜欢数量</th>
-                    <th>变更时间</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>辽宁</td>
-                    <td>158</td>
-                    <td>52</td>
-                    <td>1610</td>
-                    <td>2025-02-21 10:30:00</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>IP 归属地</th>
+                        <th>关注数量</th>
+                        <th>粉丝数量</th>
+                        <th>喜欢数量</th>
+                        <th>变更时间</th>
+                    </tr>
+                </thead>
+                <tbody id="data-body">
+                    <!-- 这里的数据将由 JavaScript 动态填充 -->
+                </tbody>
+            </table>
+        </div>
     </div>
+
+    <script src="./data.json"></script>
+    <script>
+        // 获取 tbody 元素
+        const tbody = document.getElementById('data-body');
+
+        // 遍历数据数组，为每个对象创建一个 tr 元素
+        data.forEach(item => {
+            const row = document.createElement('tr');
+
+            // 创建 IP 归属地单元格
+            const ipCell = document.createElement('td');
+            ipCell.textContent = item.ip_location;
+            row.appendChild(ipCell);
+
+            // 创建关注数量单元格
+            const followingCell = document.createElement('td');
+            followingCell.textContent = item.following_count;
+            row.appendChild(followingCell);
+
+            // 创建粉丝数量单元格
+            const followerCell = document.createElement('td');
+            followerCell.textContent = item.follower_count;
+            row.appendChild(followerCell);
+
+            // 创建喜欢数量单元格
+            const likingCell = document.createElement('td');
+            likingCell.textContent = item.favoriting_count;
+            row.appendChild(likingCell);
+
+            // 创建变更时间单元格
+            const updateCell = document.createElement('td');
+            updateCell.textContent = item.update_time;
+            row.appendChild(updateCell);
+
+            // 将行添加到 tbody 中
+            tbody.appendChild(row);
+        });
+    </script>
 </body>
 
 </html>
