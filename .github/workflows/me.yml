@@ -59,47 +59,8 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Create Node.js script
-        run: |
-          cat << EOF > compareAndUpdate.js
-          const fs = require('fs');
-          const item = JSON.parse('${{ steps.prepare-item.outputs.item }}');
-
-          // 读取 data.json 文件
-          const dataFileContent = fs.readFileSync('data.json', 'utf8');
-          // 去除 var data = 和最后的 ] ，将内容转换为纯 JSON
-          const jsonContent = dataFileContent.replace(/var data = \[/, '').replace(/\];?$/, '');
-          try {
-            const dataArray = JSON.parse(\`[\${jsonContent}]\`);
-
-            // 获取最后一条记录
-            const lastItem = dataArray[dataArray.length - 1];
-
-            // 对比字段
-            const isSame = 
-              item.ip_location === lastItem.ip_location &&
-              item.following_count === lastItem.following_count &&
-              item.follower_count === lastItem.follower_count &&
-              item.favoriting_count === lastItem.favoriting_count;
-
-            if (!isSame) {
-              // 若不一致，将 item 添加到 dataArray 中
-              dataArray.push(item);
-              // 将更新后的数据转换为字符串，并添加 var data = 和 ]
-              const newData = \`var data = \${JSON.stringify(dataArray, null, 2)}\];\`;
-              // 将新数据写入 data.json 文件
-              fs.writeFileSync('data.json', newData);
-              console.log('Data has been updated in data.json.');
-            } else {
-              console.log('The data in $item and the last item in data.json are the same. No update needed.');
-            }
-          } catch (error) {
-            console.error('Error parsing data.json:', error);
-          }
-          EOF
-
       - name: Run Node.js script
-        run: node compareAndUpdate.js
+        run: node index.js
 
       - name: Commit and push changes
         if: steps.compare-and-update.outcome == 'success'

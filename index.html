@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>数据列表</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         /* 全局样式 */
         body {
@@ -130,43 +131,83 @@
         </div>
     </div>
 
-    <script src="./data.json"></script>
     <script>
         // 获取 tbody 元素
         const tbody = document.getElementById('data-body');
+         // 使用 fetch API 发起请求
+         fetch('data.json')
+           .then(response => {
+                // 检查响应状态是否为 200（成功）
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                // 将响应数据解析为 JSON 格式
+                const data = response.json();
+                console.log('data::: ', data);
 
-        // 遍历数据数组，为每个对象创建一个 tr 元素
-        data.forEach(item => {
-            const row = document.createElement('tr');
+                // 遍历数据数组，为每个对象创建一个 tr 元素
+                data.forEach(item => {
+                    const row = document.createElement('tr');
 
-            // 创建 IP 归属地单元格
-            const ipCell = document.createElement('td');
-            ipCell.textContent = item.ip_location;
-            row.appendChild(ipCell);
+                    // 创建 IP 归属地单元格
+                    const ipCell = document.createElement('td');
+                    ipCell.textContent = item.ip_location;
+                    row.appendChild(ipCell);
 
-            // 创建关注数量单元格
-            const followingCell = document.createElement('td');
-            followingCell.textContent = item.following_count;
-            row.appendChild(followingCell);
+                    // 创建关注数量单元格
+                    const followingCell = document.createElement('td');
+                    followingCell.textContent = item.following_count;
+                    row.appendChild(followingCell);
 
-            // 创建粉丝数量单元格
-            const followerCell = document.createElement('td');
-            followerCell.textContent = item.follower_count;
-            row.appendChild(followerCell);
+                    // 创建粉丝数量单元格
+                    const followerCell = document.createElement('td');
+                    followerCell.textContent = item.follower_count;
+                    row.appendChild(followerCell);
 
-            // 创建喜欢数量单元格
-            const likingCell = document.createElement('td');
-            likingCell.textContent = item.favoriting_count;
-            row.appendChild(likingCell);
+                    // 创建喜欢数量单元格
+                    const likingCell = document.createElement('td');
+                    likingCell.textContent = item.favoriting_count;
+                    row.appendChild(likingCell);
 
-            // 创建变更时间单元格
-            const updateCell = document.createElement('td');
-            updateCell.textContent = item.update_time;
-            row.appendChild(updateCell);
+                    // 创建变更时间单元格
+                    const updateCell = document.createElement('td');
+                    updateCell.textContent = item.update_time;
+                    row.appendChild(updateCell);
 
-            // 将行添加到 tbody 中
-            tbody.appendChild(row);
-        });
+                    // 将行添加到 tbody 中
+                    tbody.appendChild(row);
+                });
+            })
+           .then(data => {
+                // 在这里可以对获取到的 JSON 数据进行操作
+                console.log(data);
+            })
+           .catch(error => {
+                // 处理请求过程中出现的错误
+                console.error('Fetch error:', error);
+            });
+
+
+             // 创建 XMLHttpRequest 对象
+        const xhr = new XMLHttpRequest();
+        // 打开一个 GET 请求
+        xhr.open('GET', 'data.json', true);
+        // 监听请求状态变化
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // 将响应文本解析为 JSON 格式
+                    const data = JSON.parse(xhr.responseText);
+                    // 在这里可以对获取到的 JSON 数据进行操作
+                    console.log(data);
+                } else {
+                    // 处理请求失败的情况
+                    console.error('请求失败，状态码:', xhr.status);
+                }
+            }
+        };
+        // 发送请求
+        xhr.send();
     </script>
 </body>
 
