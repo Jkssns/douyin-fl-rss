@@ -109,21 +109,11 @@ jobs:
       - name: Run Node.js script
         run: node compareAndUpdate.js
 
-      - name: Print token
-        run: echo $MY_TOKEN
-        env:
-          MY_TOKEN: ${{ secrets.AAA }}
-
-      - name: Print token2
-        run: echo $AAA
-        env:
-          MY_TOKEN: ${{ secrets.AAA }}
-
       - name: Commit and push changes
         run: |
             git config --global user.name 'GitHub Actions'
             git config --global user.email 'actions@github.com'
             git add .
             git commit -m 'update'
-            git remote set-url origin https://x-access-token:${{ secrets.AAA }}@github.com/${{ github.repository }}
+            git remote set-url origin https://x-access-token:${{ secrets.TTT }}@github.com/${{ github.repository }}
             git push origin main
