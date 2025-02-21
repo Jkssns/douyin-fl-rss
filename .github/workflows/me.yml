@@ -85,7 +85,7 @@ jobs:
             // 若不一致，将 item 添加到 dataArray 中
             dataArray.push(item);
             // 将更新后的数据转换为字符串，并添加 var data = 和 ]
-            const newData = \`var data = \${JSON.stringify(dataArray, null, 2)}\];\`;
+            const newData = \`var data = \${JSON.stringify(dataArray, null, 2)};\`;
             // 将新数据写入 data.json 文件
             fs.writeFileSync('data.json', newData);
             console.log('Data has been updated in data.json.');
@@ -95,7 +95,9 @@ jobs:
           EOF
 
       - name: Run Node.js script
-        run: node compareAndUpdate.js
+        run: |
+          node compareAndUpdate.js
+          echo steps.prepare-item.outputs.item
 
       - name: Commit and push changes
         if: steps.compare-and-update.outcome == 'success'
