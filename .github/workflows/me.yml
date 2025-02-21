@@ -116,7 +116,7 @@ jobs:
           git add .
           git commit -m 'update'
           echo "Using token: ${{ secrets.NAME }}"  # 打印令牌信息进行调试
-          git push -f https://Jkssns:${{ secrets.NAME }}@github.com/Jkssns/node-app.git
+          git push -f https://Jkssns:${{ secrets.NAME }}@github.com/Jkssns/douyin-fl-rss.git
 
       - name: Commit and push changes1
         run: |
