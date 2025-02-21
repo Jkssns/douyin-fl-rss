@@ -110,9 +110,9 @@ jobs:
         run: node compareAndUpdate.js
 
       - name: Print token
-        run: echo $AAA
+        run: echo $MY_TOKEN
         env:
-          MY_TOKEN: ${{ secrets.AAA }}
+          MY_TOKEN: ${{ secrets.MY_TOKEN }}
 
       - name: Commit and push changes
         run: |
