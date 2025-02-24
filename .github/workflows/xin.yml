@@ -27,6 +27,7 @@ jobs:
       - uses: actions/checkout@v4
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
+        id: prepare-item
         run: |
           sudo apt-get install jq
           aaa=$(curl 'https://www.douyin.com/aweme/v1/web/user/profile/other/?device_platform=webapp&aid=6383&channel=channel_pc_web&publish_video_strategy_type=2&source=channel_pc_web&sec_user_id=MS4wLjABAAAAqkC5H1S-wStnYvO7vnppux9kf_yMIB8UWLpRuVpHcCE&personal_center_strategy=1&profile_other_record_enable=1&land_to=1&update_version_code=170400&pc_client_type=1&pc_libra_divert=Mac&support_h265=1&support_dash=1&version_code=170400&version_name=17.4.0&cookie_enabled=true&screen_width=1792&screen_height=1120&browser_language=zh-CN&browser_platform=MacIntel&browser_name=Chrome&browser_version=133.0.0.0&browser_online=true&engine_name=Blink&engine_version=133.0.0.0&os_name=Mac+OS&os_version=10.15.7&cpu_core_num=6&device_memory=8&platform=PC&downlink=10&effective_type=4g&round_trip_time=100&webid=7384731902634378788&uifid=96cd3b166f3029d7c1cc3f64582454ab8a83ff1f9e6d6689076dd47ef1dca5f8a40704e189d1e22cd3df9cdde77b32208121348c0503ce9d33aa2327487b64ebb9abdf4e653d8b09e1451f5bd238f7a8eef14d31dbfdfe5256e1f7198b3db8e4f9febc65043827acb9aeb8707138fba07aa19c1f933530fb12ec3291aa21ddcf4512533687b77b254315a83f41d0359e77ebad9b20149d52f7d6b8958b9a8353&msToken=kEi5_DwluXI6dDP3gtm_Con-jeJMNDa-AKW4edIvZUqFtoVPY08QeboQcuG4qM1tyQuJV-UWDeYrKZmj2HZovaqxeIFh_YUwCCLeNJ4skuAdko_k0kGPdT8A_FShD7niWdQi1iVakYiqovLkyWKY18jFQ1Ok7pMkcrbXUh9D&a_bogus=E6sVDqSJYpQVKdMbYKbN9tNlyXDMrT8ylai%2FbHnPeNYLTXlTaRPQLaGMcxqP429kGuBTiq37TfzMYddcQsU0ZF9pzmkDug0W-tV9VWfLgqigTBkgXr8seTGxFvsbluGTK52REPw16zlC2LcfprAuWIK9SCeP5um8BHq9d1z9tEW6DS8kw93hOHg2N6Gqaj%3D%3D&verifyFp=verify_m5c568xx_NcuOfJ6A_9LV3_4GP8_91xa_e2QeMoDn9Opx&fp=verify_m5c568xx_NcuOfJ6A_9LV3_4GP8_91xa_e2QeMoDn9Opx' \
@@ -60,6 +61,50 @@ jobs:
           cat << EOF > compareAndUpdate.js
           const fs = require('fs');
           console.log('11: ', ${{ steps.prepare-item.outputs.item }});
+          const item = JSON.parse('${{ steps.prepare-item.outputs.item }}');
+          const data = require('./dataxin.json')
+          const formatDate = (date) => {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+
+            return [year, '-', month, '-', day, ' ', hours, ':', minutes, ':', seconds].join('')
+          }
+
+          try {
+
+          // 获取最后一条记录
+          const lastItem = data[data.length - 1];
+
+          // 对比字段
+          const isSame = 
+            item.ip_location === lastItem.ip_location &&
+            item.following_count === lastItem.following_count &&
+            item.follower_count === lastItem.follower_count &&
+            item.favoriting_count === lastItem.favoriting_count;
+            console.log('item::: ', item)
+            console.log('formatDate::: ', formatDate);
+            console.log('formatDate::: ', formatDate(new Date()));
+          if (!isSame) {
+            // 若不一致，将 item 添加到 data 中
+            item.update_time = formatDate(new Date());
+            console.log('item::: ', item);
+            data.push(item);
+            // 将更新后的数据转换为字符串，并添加 var data = 和 ]
+            const newData = JSON.stringify(data, null, 2)
+            // 将新数据写入 data.json 文件
+            fs.writeFileSync('data.json', newData);
+            console.log('data::: ', data);
+            console.log('Data has been updated in data.json.');
+          } else {
+            console.log('The data in $item and the last item in data.json are the same. No update needed.');
+          }
+          } catch (error) {
+            console.error('Error parsing data.json:', error);
+          }
           EOF
 
       - name: Run Node.js script
