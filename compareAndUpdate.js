@@ -23,19 +23,14 @@ const isSame =
   item.following_count === lastItem.following_count &&
   item.follower_count === lastItem.follower_count &&
   item.favoriting_count === lastItem.favoriting_count;
-
-  console.log('formatDate::: ', formatDate);
-  console.log('formatDate::: ', formatDate(new Date()));
 if (!isSame) {
   // 若不一致，将 item 添加到 data 中
   item.update_time = formatDate(new Date());
-  console.log('item::: ', item);
   data.push(item);
   // 将更新后的数据转换为字符串，并添加 var data = 和 ]
   const newData = JSON.stringify(data, null, 2)
   // 将新数据写入 data.json 文件
   fs.writeFileSync('data.json', newData);
-  console.log('data::: ', data);
   console.log('Data has been updated in data.json.');
 } else {
   console.log('The data in  and the last item in data.json are the same. No update needed.');
