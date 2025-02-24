@@ -4,6 +4,8 @@ name: XIN
 
 # Controls when the workflow will run
 on:
+  schedule:
+    - cron: 0 9,22,0 * * *
   workflow_dispatch:
     inputs:
         example_input:
@@ -43,4 +45,92 @@ jobs:
                       -H 'uifid: 96cd3b166f3029d7c1cc3f64582454ab8a83ff1f9e6d6689076dd47ef1dca5f8a40704e189d1e22cd3df9cdde77b32208121348c0503ce9d33aa2327487b64ebb9abdf4e653d8b09e1451f5bd238f7a8eef14d31dbfdfe5256e1f7198b3db8e4f9febc65043827acb9aeb8707138fba07aa19c1f933530fb12ec3291aa21ddcf4512533687b77b254315a83f41d0359e77ebad9b20149d52f7d6b8958b9a8353' \
                       -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36')
           bbb=$(echo "$aaa" | jq -r '(.user.ip_location | sub("IP属地："; "")) + "-关注" + (.user.following_count|tostring) + "-粉丝" + (.user.follower_count|tostring) + "-喜欢" + (.user.favoriting_count|tostring)')
+          item=$(echo "$aaa" | jq -c '{ip_location: (.user.ip_location | sub("IP属地："; "")), following_count: .user.following_count, follower_count: .user.follower_count, favoriting_count: .user.favoriting_count}')
+          echo "$item"
           curl "https://cx.super4.cn/push_msg?appkey=30de5d71bf88a6e74a39d572815e3fff-NKZBLIfu&title=$bbb"
+          echo "item=$item" >> $GITHUB_OUTPUT
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Create Node.js script
+        run: |
+          cat << EOF > compareAndUpdate.js
+          const fs = require('fs');
+          const item = JSON.parse('${{ steps.prepare-item.outputs.item }}');
+          const data = require('./dataxin.json')
+          const formatDate = (date) => {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+
+            return [year, '-', month, '-', day, ' ', hours, ':', minutes, ':', seconds].join('')
+          }
+
+          try {
+
+          // 获取最后一条记录
+          const lastItem = data[data.length - 1];
+
+          // 对比字段
+          const isSame = 
+            item.ip_location === lastItem.ip_location &&
+            item.following_count === lastItem.following_count &&
+            item.follower_count === lastItem.follower_count &&
+            item.favoriting_count === lastItem.favoriting_count;
+
+            console.log('formatDate::: ', formatDate);
+            console.log('formatDate::: ', formatDate(new Date()));
+          if (!isSame) {
+            // 若不一致，将 item 添加到 data 中
+            item.update_time = formatDate(new Date());
+            console.log('item::: ', item);
+            data.push(item);
+            // 将更新后的数据转换为字符串，并添加 var data = 和 ]
+            const newData = JSON.stringify(data, null, 2)
+            // 将新数据写入 data.json 文件
+            fs.writeFileSync('data.json', newData);
+            console.log('data::: ', data);
+            console.log('Data has been updated in data.json.');
+          } else {
+            console.log('The data in $item and the last item in data.json are the same. No update needed.');
+          }
+          } catch (error) {
+            console.error('Error parsing data.json:', error);
+          }
+          EOF
+
+      - name: Run Node.js script
+        run: node compareAndUpdate.js
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if git diff --quiet; then
+            echo "No changes detected. Stopping execution."
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected. Proceeding with commit and push."
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.check-changes.outputs.has_changes == 'true'
+        run: |
+          git config --global user.name 'Jkssns'
+          git config --global user.email 'zhangjun035@126.com'
+          git add .
+          git commit -m 'update'
+          git remote set-url origin https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/${{ github.repository }}
+          git push origin main
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          publish_dir: ./
