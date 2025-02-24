@@ -90,6 +90,9 @@ jobs:
           if (!isSame) {
             // 若不一致，将 item 添加到 data 中
             item.update_time = formatDate(new Date());
+            console.log('formatDate::: ', formatDate);
+            console.log('formatDate::: ', formatDate(new Date()));
+            console.log('item::: ', item);
             data.push(item);
             // 将更新后的数据转换为字符串，并添加 var data = 和 ]
             const newData = JSON.stringify(data, null, 2)
@@ -108,7 +111,19 @@ jobs:
       - name: Run Node.js script
         run: node compareAndUpdate.js
 
-      - name: Commit and push changes1
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if git diff --quiet; then
+            echo "No changes detected. Stopping execution."
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected. Proceeding with commit and push."
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.check-changes.outputs.has_changes == 'true'
         run: |
           git config --global user.name 'Jkssns'
           git config --global user.email 'zhangjun035@126.com'
