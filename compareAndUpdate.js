@@ -27,6 +27,9 @@ const isSame =
 if (!isSame) {
   // 若不一致，将 item 添加到 data 中
   item.update_time = formatDate(new Date());
+  console.log('formatDate::: ', formatDate);
+  console.log('formatDate::: ', formatDate(new Date()));
+  console.log('item::: ', item);
   data.push(item);
   // 将更新后的数据转换为字符串，并添加 var data = 和 ]
   const newData = JSON.stringify(data, null, 2)
