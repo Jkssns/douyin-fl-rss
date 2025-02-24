@@ -59,6 +59,7 @@ jobs:
         run: |
           cat << EOF > compareAndUpdate.js
           const fs = require('fs');
+          console.log('11: ', ${{ steps.prepare-item.outputs.item }});
           const item = JSON.parse('${{ steps.prepare-item.outputs.item }}');
           const data = require('./dataxin.json')
           const formatDate = (date) => {
