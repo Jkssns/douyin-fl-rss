@@ -83,7 +83,7 @@ jobs:
             item.following_count === lastItem.following_count &&
             item.follower_count === lastItem.follower_count &&
             item.favoriting_count === lastItem.favoriting_count;
-
+            console.log('item::: ', item)
             console.log('formatDate::: ', formatDate);
             console.log('formatDate::: ', formatDate(new Date()));
           if (!isSame) {
