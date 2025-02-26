@@ -1,5 +1,5 @@
 const fs = require('fs');
-const item = JSON.parse('{"ip_location":"北京","following_count":6,"follower_count":18,"favoriting_count":143}');
+const item = JSON.parse('{"ip_location":"北京","following_count":6,"follower_count":25,"favoriting_count":143}');
 const data = require('./datame.json')
 const formatDate = (date) => {
   const year = date.getFullYear();
