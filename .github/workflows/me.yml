@@ -93,7 +93,7 @@ jobs:
             // 将更新后的数据转换为字符串，并添加 var data = 和 ]
             const newData = JSON.stringify(data, null, 2)
             // 将新数据写入 data.json 文件
-            fs.writeFileSync('data.json', newData);
+            fs.writeFileSync('datame.json', newData);
             console.log('Data has been updated in data.json.');
           } else {
             console.log('The data in $item and the last item in data.json are the same. No update needed.');
