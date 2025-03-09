@@ -1,6 +1,6 @@
 const fs = require('fs');
-console.log('11: ', {"ip_location":"辽宁","following_count":159,"follower_count":53,"favoriting_count":1611});
-const item = JSON.parse('{"ip_location":"辽宁","following_count":159,"follower_count":53,"favoriting_count":1611}');
+console.log('11: ', {"ip_location":"辽宁","following_count":160,"follower_count":53,"favoriting_count":1611});
+const item = JSON.parse('{"ip_location":"辽宁","following_count":160,"follower_count":53,"favoriting_count":1611}');
 const data = require('./dataxin.json')
 const formatDate = (date) => {
   const year = date.getFullYear();
