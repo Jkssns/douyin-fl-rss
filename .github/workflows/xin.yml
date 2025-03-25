@@ -5,8 +5,6 @@ permissions:
   contents: write
 # Controls when the workflow will run
 on:
-  env:
-    TZ: Asia/Shanghai
   schedule:
     - cron: 24 9,22,0 * * *
   workflow_dispatch:
@@ -15,8 +13,8 @@ on:
           description: '来了老弟'
           required: true
           default: '别看了，没意义'
-  
-
+env:
+  TZ: Asia/Shanghai
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"

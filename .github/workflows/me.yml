@@ -9,8 +9,6 @@ on:
   push:
   schedule:
     - cron: 24 9,22,0 * * *
-  env:
-    TZ: Asia/Shanghai
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
@@ -18,6 +16,8 @@ on:
           description: 'An example input'
           required: true
           default: 'default_value'
+env:
+  TZ: Asia/Shanghai
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
