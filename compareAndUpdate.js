@@ -1,6 +1,7 @@
 const fs = require('fs');
-const item = JSON.parse('{"ip_location":"北京","following_count":91,"follower_count":107,"favoriting_count":143}');
-const data = require('./datame.json')
+console.log('11: ', {"ip_location":"辽宁","following_count":160,"follower_count":53,"favoriting_count":1608});
+const item = JSON.parse('{"ip_location":"辽宁","following_count":160,"follower_count":53,"favoriting_count":1608}');
+const data = require('./dataxin.json')
 const formatDate = (date) => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -30,7 +31,7 @@ if (!isSame) {
   // 将更新后的数据转换为字符串，并添加 var data = 和 ]
   const newData = JSON.stringify(data, null, 2)
   // 将新数据写入 data.json 文件
-  fs.writeFileSync('datame.json', newData);
+  fs.writeFileSync('dataxin.json', newData);
   console.log('Data has been updated in data.json.');
 } else {
   console.log('The data in  and the last item in data.json are the same. No update needed.');
